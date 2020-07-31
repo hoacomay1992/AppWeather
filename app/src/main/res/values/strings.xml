@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">App Weather</string>
+
+    <string name="message_request_permission_read_phone_state">We need permission to identify your device</string>
+    <!--activity_main.xml-->
+    <string name="country_name">Viet Nam</string>
+    <string name="address_location">42 Xuan Dinh, Bac Tu Liem, Ha Noi, Viet Nam</string>
+    <string name="date_time">WEDNEDAY 9 AM</string>
+    <string name="temp">18°C</string>
+    <string name="status">Sunny</string>
+    <string name="humidity">humidity</string>
+    <string name="humidity_number">90%</string>
+    <string name="wind">wind</string>
+    <string name="wind_number">3 km/h</string>
+    <string name="clound">clound</string>
+    <string name="clound_number">40%</string>
+    <string name="button_7days">The next 7 days</string>
+</resources>

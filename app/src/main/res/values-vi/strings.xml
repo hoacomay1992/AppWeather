@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">App Weather</string>
+
+    <string name="message_request_permission_read_phone_state">Chúng tôi cần quyền để xác định thiết bị của bạn</string>
+
+    <!--activity_main.xml-->
+    <string name="country_name">Việt Nam</string>
+    <string name="address_location">42 Xuân Đỉnh, Bắc Từ Liêm, Hà Nội, Việt Nam</string>
+    <string name="date_time">Thứ Tư 9 Sáng</string>
+    <string name="temp">18°C</string>
+    <string name="status">Nắng Ráo</string>
+    <string name="humidity">Độ Ẩm</string>
+    <string name="humidity_number">90%</string>
+    <string name="wind">Gió</string>
+    <string name="wind_number">3 km/h</string>
+    <string name="clound">Mây</string>
+    <string name="clound_number">40%</string>
+    <string name="button_7days">7 Ngày Tiếp Theo</string>
+</resources>
