@@ -22,6 +22,15 @@ public class WeatherAdapter extends BaseAdapter {
         this.weatherList = weatherList;
     }
 
+    public void addListItemToAdapter(List<Weather> list) {
+        // thêm danh sách hiện tại vào list của data
+        weatherList.addAll(list);
+        //cập nhật lên UI
+        this.notifyDataSetChanged();
+
+
+    }
+
     @Override
     public int getCount() {
         return weatherList.size();
@@ -39,21 +48,37 @@ public class WeatherAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.list_data_weather, null);
-
+        ViewHolder viewHolder = null;
         Weather weather = weatherList.get(position);
-        TextView tvDay = convertView.findViewById(R.id.tv_date);
-        TextView tvStatus = convertView.findViewById(R.id.tv_status);
-        ImageView imgStatus = convertView.findViewById(R.id.img_status);
-        TextView tvMaxTemp = convertView.findViewById(R.id.tv_max_temp);
-        TextView tvMinTemp = convertView.findViewById(R.id.tv_min_temp);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_data_weather, null);
+            viewHolder = new ViewHolder();
+            viewHolder.tvDay = convertView.findViewById(R.id.tv_date);
+            viewHolder.tvStatus = convertView.findViewById(R.id.tv_status);
+            viewHolder.imgStatus = convertView.findViewById(R.id.img_status);
+            viewHolder.tvMaxTemp = convertView.findViewById(R.id.tv_max_temp);
+            viewHolder.tvMinTemp = convertView.findViewById(R.id.tv_min_temp);
+            convertView.setTag(viewHolder);//chuyển vaofbooj nhớ đệm
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
 
-        tvDay.setText(weather.getDay());
-        tvStatus.setText(weather.getStatus());
-        tvMaxTemp.setText(weather.getMaxTemp() + "°C");
-        tvMinTemp.setText(weather.getMinTemp() + "°C");
-        Picasso.get().load("http://openweathermap.org/img/wn/" + weather.getImage() + ".png").into(imgStatus);
+
+        viewHolder.tvDay.setText(weather.getDay());
+        viewHolder.tvStatus.setText(weather.getStatus());
+        viewHolder.tvMaxTemp.setText(weather.getMaxTemp() + "°C");
+        viewHolder.tvMinTemp.setText(weather.getMinTemp() + "°C");
+        Picasso.get().load("http://openweathermap.org/img/wn/" + weather.getImage() + ".png").into(viewHolder.imgStatus);
         return convertView;
+    }
+
+    private class ViewHolder {
+        TextView tvDay;
+        TextView tvStatus;
+        ImageView imgStatus;
+        TextView tvMaxTemp;
+        TextView tvMinTemp;
+
     }
 }

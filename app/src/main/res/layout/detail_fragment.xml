@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/backggroung_hind"
-        android:orientation="vertical">
+        android:background="@drawable/backggroung_hind">
+
+        <ProgressBar
+            android:id="@+id/progress_fragment"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="#C0EAF4FB"
+            android:progress="80" />
 
         <ListView
             android:id="@+id/lv_weather"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>

@@ -1,10 +1,16 @@
 package com.example.appweather.helper;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class Helper {
 
@@ -44,6 +50,7 @@ public class Helper {
 
     /**
      * The test for lat lng status does not exist
+     *
      * @param lat
      * @param lng
      * @return
@@ -52,5 +59,19 @@ public class Helper {
         if (lat != 0 && lng != 0)
             return true;
         return false;
+    }
+
+    public static List<Address> getAddress(Context context, double lat, double lng) {
+        try {
+            Geocoder gcd = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = null;
+            addresses = gcd.getFromLocation(lat, lng, 1);
+            if (addresses.size() > 0) {
+                return addresses;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
