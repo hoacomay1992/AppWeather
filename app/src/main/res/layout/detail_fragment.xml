@@ -12,7 +12,7 @@
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_centerInParent="true"
-            android:indeterminateTint="#C0EAF4FB"
+            android:indeterminateTint="@color/color_progress_bar"
             android:progress="80" />
 
         <ListView

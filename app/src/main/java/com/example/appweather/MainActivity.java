@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_FRAGMENT_LAT_LNG = "Lat_Lng";
     public static final String KEY_MAPSACTIVITY_LAT = "Lat_Maps";
     public static final String KEY_MAPSACTIVITY_LNG = "Lng_Maps";
+    public static final String KEY_MAPSACTIVITY_Address = "Address_Maps";
     public static final int REQUEST_CODE_MAPS = 101;
 
     private double lat;
     private double lng;
-    private String currentCountryName = "";
     private String currentAddress = "";
 
     @Override
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             lng = gpsLocation.getLongitude();
             List<Address> addresses = Helper.getAddress(this, lat, lng);
             if (addresses.size() > 0) {
-                currentCountryName = addresses.get(0).getCountryName();
+                //currentCountryName = addresses.get(0).getCountryName();
                 currentAddress = addresses.get(0).getAddressLine(0);
             } else {
                 Toast.makeText(this, "Không tồn tại location", Toast.LENGTH_SHORT).show();
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putDouble(KEY_MAPSACTIVITY_LAT, lat);
                     bundle.putDouble(KEY_MAPSACTIVITY_LNG, lng);
+                    bundle.putString(KEY_MAPSACTIVITY_Address, currentAddress);
                     intent.putExtras(bundle);
                     startActivityForResult(intent, REQUEST_CODE_MAPS);
                 }
@@ -113,6 +114,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_MAPS) {
+            if (resultCode == RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                lat = bundle.getDouble(MapsActivity.EXTRA_DATA_LAT);
+                lng = bundle.getDouble(MapsActivity.EXTRA_DATA_Lng);
+                currentAddress = bundle.getString(MapsActivity.EXTRA_DATA_ADDRESS);
+                Log.d("BBBBBBBBBBBBBBBBBBBBBB", lat + "");
+                Log.d("BBBBBBBBBBBBBBBBBBBBBB", lng + "");
+                Log.d("BBBBBBBBBBBBBBBBBBBBBB", currentAddress);
+                getWeatherDataLocation(lat, lng);
+                binding.tvAddress.setText(currentAddress);
+            }
+
+        }
     }
 
     public void getWeatherDataLocation(double lat, double lng) {
@@ -121,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         callback.enqueue(new Callback<WeatherData>() {
             @Override
             public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
-                binding.tvCountry.setText(currentCountryName);
+                //binding.tvCountry.setText(currentCountryName);
                 binding.tvAddress.setText(currentAddress);
                 Picasso.get().load("http://openweathermap.org/img/wn/" + response.body().getWeather().get(0).getIcon() + ".png").into(binding.imgIcon, new com.squareup.picasso.Callback() {
                     @Override
@@ -159,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
                 binding.tvAddress.setText(response.body().getName());
-                binding.tvCountry.setText(response.body().getSys().getCountry());
+                //binding.tvCountry.setText(response.body().getSys().getCountry());
                 binding.tvHumidity.setText(response.body().getMain().getHumidity().toString() + "%");
                 Picasso.get().load("http://openweathermap.org/img/wn/" + response.body().getWeather().get(0).getIcon() + ".png").into(binding.imgIcon);
                 binding.tvStatus.setText(response.body().getWeather().get(0).getMain());

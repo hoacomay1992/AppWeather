@@ -10,4 +10,6 @@
     <color name="bg_icon">#89AECDE6</color>
     <color name="text1">#000000</color>
     <color name="text2">#ffffff</color>
+    <color name="color_progress_bar">#FFFFFF</color>
+    <color name="backround_list">#B3F3F3F3</color>
 </resources>

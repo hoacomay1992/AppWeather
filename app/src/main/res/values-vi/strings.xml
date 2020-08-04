@@ -16,4 +16,13 @@
     <string name="clound">Mây</string>
     <string name="clound_number">40%</string>
     <string name="button_7days">7 Ngày Tiếp Theo</string>
+    <string name="todo">TODO</string>
+    <string name="todo1">TODO</string>
+
+    <!--list_data_weather.xml-->
+    <string name="date">Ngày Tháng</string>
+    <string name="status_next">Trạng Thái</string>
+    <string name="max_temp">Nhiệt Độ Cao Nhất</string>
+    <string name="min_temp">Nhiệt Độ Thấp Nhất</string>
+    <string name="todo2">TODO</string>
 </resources>

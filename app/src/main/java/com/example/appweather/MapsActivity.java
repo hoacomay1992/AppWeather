@@ -4,13 +4,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.appweather.databinding.ActivityMapsBinding;
+import com.example.appweather.helper.Helper;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,16 +36,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     GoogleMap mMap;
     SupportMapFragment mapFragment;
     public static final int REQUESST_CODE_AUTOCOMPLEX = 100;
+    public static final String EXTRA_DATA_LAT = "Lat";
+    public static final String EXTRA_DATA_Lng = "Lng";
+    public static final String EXTRA_DATA_ADDRESS = "Address";
+
     private double lat;
     private double lng;
     private String nameAddress;
-    private String nameLocation;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mapsBinding = DataBindingUtil.setContentView(this, R.layout.activity_maps);
         getDriverLocation();
+        Log.d("BBBBBBBB", lat + "");
+        Log.d("BBBBBBBB", lng + "");
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -62,6 +71,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivityForResult(intent, REQUESST_CODE_AUTOCOMPLEX);
             }
         });
+        mapsBinding.btnFindWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Helper.checkLatLng(lat, lng) == true) {
+                    final Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putDouble(EXTRA_DATA_LAT, lat);
+                    bundle.putDouble(EXTRA_DATA_Lng, lng);
+                    bundle.putString(EXTRA_DATA_ADDRESS, nameAddress);
+                    intent.putExtras(bundle);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else {
+                    Toast.makeText(MapsActivity.this, "Bạn chưa chọn địa điểm", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -76,19 +103,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             lat = place.getLatLng().latitude;
             lng = place.getLatLng().longitude;
             nameAddress = place.getAddress();
-            nameLocation = place.getName();
-            mapsBinding.latlng.setText(lat + "," + lng);
-            mapsBinding.name.setText(nameAddress);
-            Log.d("Location Name: ", place.getName());
-            Log.d("Lat: ", place.getLatLng().latitude + "");
-            Log.d("Lng: ", place.getLatLng().longitude + "");
-            LatLng latLng = new LatLng(lat, lng);
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(latLng);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            markerOptions.title(nameLocation).snippet(nameAddress);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-            mMap.addMarker(markerOptions);
+            name = place.getName();
+            Log.d("BBBBBBBBBBBBBB ", nameAddress);
+            Log.d("BBBBBBBBBBBBBB ", lat + "");
+            Log.d("BBBBBBBBBBBBBB ", lng + "");
+            Helper.addMakerLocation(mMap, lat, lng, name, nameAddress);
         } else if (requestCode == AutocompleteActivity.RESULT_ERROR) {
             //khi lỗi khởi tạo status
             Status status = Autocomplete.getStatusFromIntent(data);
@@ -100,16 +119,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
+        //mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
-
         LatLng latLng = new LatLng(lat, lng);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-        markerOptions.title("nameLocation").snippet("nameAddress");
+        markerOptions.title("My Here").snippet(nameAddress);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
         mMap.addMarker(markerOptions);
 
@@ -119,5 +137,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bundle bundle = getIntent().getExtras();
         lat = bundle.getDouble(MainActivity.KEY_MAPSACTIVITY_LAT);
         lng = bundle.getDouble(MainActivity.KEY_MAPSACTIVITY_LNG);
+        nameAddress = bundle.getString(MainActivity.KEY_MAPSACTIVITY_Address);
     }
 }

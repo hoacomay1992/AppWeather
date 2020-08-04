@@ -5,6 +5,12 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,5 +79,15 @@ public class Helper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void addMakerLocation(GoogleMap mMap, double lat, double lng, String nameAddress, String spneetAddress) {
+        LatLng latLng = new LatLng(lat, lng);
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        markerOptions.title(nameAddress).snippet(spneetAddress);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+        mMap.addMarker(markerOptions);
     }
 }

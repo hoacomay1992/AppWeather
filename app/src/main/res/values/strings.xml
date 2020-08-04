@@ -15,4 +15,13 @@
     <string name="clound">clound</string>
     <string name="clound_number">40%</string>
     <string name="button_7days">The next 7 days</string>
+    <string name="todo">TODO</string>
+    <string name="todo1">TODO</string>
+
+    <!--list_data_weather.xml-->
+    <string name="date">Date Time</string>
+    <string name="status_next">Status</string>
+    <string name="max_temp">Max Temple</string>
+    <string name="min_temp">Min Temple</string>
+    <string name="todo2">TODO</string>
 </resources>

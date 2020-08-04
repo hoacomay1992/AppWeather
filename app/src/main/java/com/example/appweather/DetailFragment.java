@@ -88,7 +88,7 @@ public class DetailFragment extends Fragment {
                 for (int i = 0; i < listData.size(); i++) {
                     String time = Helper.unixTimeStampToDatime(listData.get(i).getDt());
                     String date = Helper.getDateOfWeek(listData.get(i).getDt());
-                    String dateTime = date + " " + time;
+                    String dateTime = date;
 
                     String maxTemp = String.valueOf(listData.get(i).getTemp().getMax());
                     String minTemp = String.valueOf(listData.get(i).getTemp().getMin());

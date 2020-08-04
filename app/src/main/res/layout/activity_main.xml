@@ -22,40 +22,27 @@
                     android:id="@+id/btn_maps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
-                    android:background="@drawable/bg_maps"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp">
 
                     <ImageView
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/ic_add_location" />
+                        android:contentDescription="@string/todo1"
+                        android:src="@drawable/ic_maps_location" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_country"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:text="@string/country_name"
-                    android:textAllCaps="true"
-                    android:textColor="@color/text1"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_country"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_50sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:gravity="center"
                     android:text="@string/address_location"
@@ -90,6 +77,7 @@
                         android:id="@+id/img_icon"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_110sdp"
+                        android:contentDescription="@string/todo"
                         android:src="@drawable/sunny_icon" />
 
                     <ProgressBar
@@ -98,7 +86,7 @@
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
                         android:layout_centerInParent="true"
-                        android:indeterminateTint="#C0FEFFFF"
+                        android:indeterminateTint="@color/color_progress_bar"
                         android:progress="80" />
                 </RelativeLayout>
 
@@ -110,7 +98,7 @@
                     android:layout_below="@+id/group_progressbar"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="18°C"
+                    android:text="@string/temp"
                     android:textColor="@color/text1"
                     android:textSize="50sp"
                     android:textStyle="bold" />
@@ -137,6 +125,7 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_2sdp"
                     android:background="@drawable/bg_status"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
