@@ -45,5 +45,12 @@ dependencies {
     implementation 'pub.devrel:easypermissions:2.0.0'
     implementation 'com.google.android.libraries.places:places:2.3.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    //
+    implementation 'com.google.maps.android:android-maps-utils:2.0.3'
+//    // KTX for the Maps SDK for Android library
+//    implementation 'com.google.maps.android:maps-ktx:2.1.1'
+//
+//    // KTX for the Maps SDK for Android Utility Library
+//    implementation 'com.google.maps.android:maps-utils-ktx:2.1.1'
 
 }
