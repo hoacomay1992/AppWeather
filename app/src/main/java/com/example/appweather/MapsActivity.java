@@ -78,8 +78,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapsBinding = DataBindingUtil.setContentView(this, R.layout.activity_maps);
         getDriverLocation();
         mIsRestore = savedInstanceState != null;
-        Log.d("BBBBBBBB", lat + "");
-        Log.d("BBBBBBBB", lng + "");
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -112,7 +110,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 } else {
-                    Toast.makeText(MapsActivity.this, "Bạn chưa chọn địa điểm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapsActivity.this, getString(R.string.toat2), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -131,10 +129,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             lng = place.getLatLng().longitude;
             nameAddress = place.getAddress();
             name = place.getName();
-            Log.d("BBBBBBBBBBBBBB ", nameAddress);
-            Log.d("BBBBBBBBBBBBBB ", lat + "");
-            Log.d("BBBBBBBBBBBBBB ", lng + "");
-            Helper.addMakerLocation(mMap, lat, lng, name, nameAddress);
+            Helper.addMakerLocation(getMap(), lat, lng, name, nameAddress);
         } else if (requestCode == AutocompleteActivity.RESULT_ERROR) {
             //khi lỗi khởi tạo status
             Status status = Autocomplete.getStatusFromIntent(data);
@@ -145,7 +140,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
         if (mMap != null) {
             return;
         }

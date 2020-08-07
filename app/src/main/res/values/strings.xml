@@ -18,10 +18,28 @@
     <string name="todo">TODO</string>
     <string name="todo1">TODO</string>
 
+    <!--MainActivity.java-->
+    <string name="Toat1">No location exists</string>
+
     <!--list_data_weather.xml-->
     <string name="date">Date Time</string>
     <string name="status_next">Status</string>
     <string name="max_temp">Max Temple</string>
     <string name="min_temp">Min Temple</string>
     <string name="todo2">TODO</string>
+
+    <!--activity_maps.xml-->
+    <string name="edittex_hind">Enter address</string>
+    <string name="toat2">You have not selected a location</string>
+
+    <!--Description weather-->
+    <string name="clear_sky">clear sky</string>
+    <string name="few_clouds">few clouds</string>
+    <string name="scattered_clouds">scattered clouds</string>
+    <string name="broken_clouds">broken clouds</string>
+    <string name="shower_rain">shower rain</string>
+    <string name="rain">rain</string>
+    <string name="thunderstorm">thunderstorm</string>
+    <string name="snow">snow</string>
+    <string name="mist">mist</string>
 </resources>

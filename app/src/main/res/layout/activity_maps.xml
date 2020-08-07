@@ -23,11 +23,13 @@
                 android:id="@+id/edt_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:background="@android:drawable/editbox_background"
-                android:drawableLeft="@drawable/ic_location"
+                android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="@dimen/_16sdp"
                 android:gravity="center_vertical"
-                android:hint="Enter address"
+                android:hint="@string/edittex_hind"
+                android:inputType="text"
                 android:padding="@dimen/_15sdp" />
         </LinearLayout>
 

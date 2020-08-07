@@ -3,11 +3,9 @@ package com.example.appweather;
 import android.Manifest;
 import android.content.Intent;
 import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,12 +16,10 @@ import androidx.databinding.DataBindingUtil;
 import com.example.appweather.databinding.ActivityMainBinding;
 import com.example.appweather.gpsmanagement.GPSLocation;
 import com.example.appweather.helper.Helper;
-import com.example.appweather.models.Weather;
 import com.example.appweather.models.WeatherData;
 import com.example.appweather.retrofit.ApiClient;
 import com.example.appweather.retrofit.ApiInterface;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -58,10 +54,9 @@ public class MainActivity extends AppCompatActivity {
             setLng(gpsLocation.getLongitude());
             List<Address> addresses = Helper.getAddress(this, getLat(), getLng());
             if (addresses.size() > 0) {
-                //currentCountryName = addresses.get(0).getCountryName();
                 setCurrentAddress(addresses.get(0).getAddressLine(0));
             } else {
-                Toast.makeText(this, "Không tồn tại location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.Toat1), Toast.LENGTH_SHORT).show();
             }
         } else {
             Log.d("BBBBBBB ", "Lỗi");
@@ -90,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack(null).commit();
 
                 } else {
-                    Toast.makeText(MainActivity.this, "không tồn tại vị trí", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.Toat1), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -129,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 setLat(bundle.getDouble(MapsActivity.EXTRA_DATA_LAT));
                 setLng(bundle.getDouble(MapsActivity.EXTRA_DATA_Lng));
                 setCurrentAddress(bundle.getString(MapsActivity.EXTRA_DATA_ADDRESS));
-                //double lat = bundle.getDouble(MapsActivity.EXTRA_DATA_LAT);
-                //double lng = bundle.getDouble(MapsActivity.EXTRA_DATA_Lng);
                 Log.d("vị trí lấy từ maps", getLat() + " " + getLng());
                 if (!isFLAG_WEATHER_MAPS()) {
                     getWeatherDataLocation(lat, lng);
@@ -153,13 +146,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
                 if (response.code() == 404) {
-                    Toast.makeText(MainActivity.this, "Không có vị trí được chọn", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.Toat1), Toast.LENGTH_SHORT).show();
                 } else if (!(response.isSuccessful())) {
-                    Toast.makeText(MainActivity.this, "Test không vòa:  ", Toast.LENGTH_SHORT).show();
                     Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_LONG).show();
                 }
-                //binding.tvCountry.setText(currentCountryName);
-                Log.d("hàm thời tiết", response.body().getCoord().getLat() + " " + response.body().getCoord().getLon());
                 String descrition = response.body().getWeather().get(0).getDescription();
                 if (descrition.equals("clear sky") || descrition.equals("few clouds")) {
                     binding.bgMain.setBackgroundResource(R.drawable.backggroung_hind);
@@ -183,9 +173,29 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+                if (descrition.equals("clear sky")) {
+                    binding.tvStatus.setText(getString(R.string.clear_sky));
+                } else if (descrition.equals("few clouds")) {
+                    binding.tvStatus.setText(getString(R.string.few_clouds));
+                } else if (descrition.equals("scattered clouds")) {
+                    binding.tvStatus.setText(getString(R.string.scattered_clouds));
+                } else if (descrition.equals("broken clouds")) {
+                    binding.tvStatus.setText(getString(R.string.broken_clouds));
+                } else if (descrition.equals("shower rain")) {
+                    binding.tvStatus.setText(getString(R.string.shower_rain));
+                } else if (descrition.equals("rain")) {
+                    binding.tvStatus.setText(getString(R.string.rain));
+                } else if (descrition.equals("thunderstorm")) {
+                    binding.tvStatus.setText(getString(R.string.thunderstorm));
+                } else if (descrition.equals("snow")) {
+                    binding.tvStatus.setText(getString(R.string.snow));
+                } else if (descrition.equals("mist")) {
+                    binding.tvStatus.setText(getString(R.string.mist));
+                } else {
+                    binding.tvStatus.setText(descrition);
+                }
                 binding.tvHumidity.setText(response.body().getMain().getHumidity() + "%");
                 binding.tvTemp.setText(response.body().getMain().getTemp() + "°C");
-                binding.tvStatus.setText(descrition);
                 binding.tvWind.setText(response.body().getWind().getSpeed() + " m/s");
                 binding.tvCloud.setText(response.body().getClouds().getAll() + "%");
                 String time = Helper.unixTimeStampToDatime(response.body().getDt());
@@ -196,10 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<WeatherData> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Test bị lỗi----", Toast.LENGTH_LONG).show();
-
                 //Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("TAG", t.getMessage());
+                //Log.d("TAG", t.getMessage());
             }
         });
     }

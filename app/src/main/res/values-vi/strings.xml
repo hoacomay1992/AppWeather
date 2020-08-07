@@ -19,10 +19,28 @@
     <string name="todo">TODO</string>
     <string name="todo1">TODO</string>
 
+    <!--MainActivity.java-->
+    <string name="Toat1">Không tồn tại vị trí</string>
+
     <!--list_data_weather.xml-->
     <string name="date">Ngày Tháng</string>
     <string name="status_next">Trạng Thái</string>
     <string name="max_temp">Nhiệt Độ Cao Nhất</string>
     <string name="min_temp">Nhiệt Độ Thấp Nhất</string>
     <string name="todo2">TODO</string>
+
+    <!--activity_maps.xml-->
+    <string name="edittex_hind">Nhập địa chỉ</string>
+    <string name="toat2">Bạn chưa chọn địa điểm</string>
+
+    <!--Description weather-->
+    <string name="clear_sky">bầu trời quang đãng</string>
+    <string name="few_clouds">vài đám mây</string>
+    <string name="scattered_clouds">mây rải rác</string>
+    <string name="broken_clouds">mây tan</string>
+    <string name="shower_rain">Mưa rào</string>
+    <string name="rain">Có mưa</string>
+    <string name="thunderstorm">Mưa giông kèm sấm sét</string>
+    <string name="snow">Tuyết rơi</string>
+    <string name="mist">Sương mù</string>
 </resources>

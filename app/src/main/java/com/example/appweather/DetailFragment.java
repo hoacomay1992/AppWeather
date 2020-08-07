@@ -54,7 +54,7 @@ public class DetailFragment extends Fragment {
         if (bundle != null) {
             lat = bundle.getDouble(MainActivity.KEY_FRAGMENT_LAT);
             lng = bundle.getDouble(MainActivity.KEY_FRAGMENT_LNG);
-            Log.d("Địa điểm fragment", lat + "" + lng);
+            //Log.d("Địa điểm fragment", lat + "" + lng);
             binding.lvWeather.setAdapter(weatherAdapter);
             getList7DayData(lat, lng);
         }
