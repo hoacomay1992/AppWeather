@@ -3,6 +3,7 @@ package com.example.appweather;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,13 +51,10 @@ public class DetailFragment extends Fragment {
         weatherList = new ArrayList<>();
         weatherAdapter = new WeatherAdapter(getActivity(), weatherList);
         Bundle bundle = getArguments();
-
         if (bundle != null) {
-            double[] listLatLng = bundle.getDoubleArray(MainActivity.KEY_FRAGMENT_LAT_LNG);
-            for (int i = 0; i < listLatLng.length; i++) {
-                lat = listLatLng[0];
-                lng = listLatLng[1];
-            }
+            lat = bundle.getDouble(MainActivity.KEY_FRAGMENT_LAT);
+            lng = bundle.getDouble(MainActivity.KEY_FRAGMENT_LNG);
+            Log.d("Địa điểm fragment", lat + "" + lng);
             binding.lvWeather.setAdapter(weatherAdapter);
             getList7DayData(lat, lng);
         }
@@ -79,8 +77,10 @@ public class DetailFragment extends Fragment {
     }
 
     private void getList7DayData(double lat, double lng) {
+        String latLocation = String.valueOf(lat);
+        String lngLocation = String.valueOf(lng);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Weather7Data> callback = apiInterface.get7WeatherDataLocation(lat, lng);
+        Call<Weather7Data> callback = apiInterface.get7WeatherDataLocation(latLocation, lngLocation);
         callback.enqueue(new Callback<Weather7Data>() {
             @Override
             public void onResponse(Call<Weather7Data> call, Response<Weather7Data> response) {
@@ -99,34 +99,6 @@ public class DetailFragment extends Fragment {
                 }
                 weatherAdapter.notifyDataSetChanged();
                 binding.progressFragment.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<Weather7Data> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void getListDayData(String name) {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Weather7Data> callback = apiInterface.get7WeatherData(name);
-        callback.enqueue(new Callback<Weather7Data>() {
-            @Override
-            public void onResponse(Call<Weather7Data> call, Response<Weather7Data> response) {
-                java.util.List<List> listData = response.body().getList();
-                for (int i = 0; i < listData.size(); i++) {
-//                    int dt = response.body().getList().get(i).getDt();
-//                    String time = Helper.getTime(dt);
-
-                    String maxTemp = String.valueOf(listData.get(i).getTemp().getMax());
-                    String minTemp = String.valueOf(listData.get(i).getTemp().getMin());
-
-                    String description = listData.get(i).getWeather().get(0).getDescription();
-                    String icon = listData.get(i).getWeather().get(0).getIcon();
-                    //weatherList.add(new Weather(time, description, icon, maxTemp, minTemp));
-                }
-                weatherAdapter.notifyDataSetChanged();
             }
 
             @Override

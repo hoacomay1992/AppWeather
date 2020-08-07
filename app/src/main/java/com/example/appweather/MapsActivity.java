@@ -68,7 +68,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double lng;
     private String nameAddress;
     private String name;
-    private ClusterManager<MyItem> mClusterManager;
     private ClusterManager<Person> mClusterManagerPerson;
     private Random mRandom = new Random(1984);
     private boolean mIsRestore;
@@ -340,9 +339,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mClusterManagerPerson.addItem(new Person(new LatLng(lat, lng), "Hậu", R.drawable.hau));
 
         mClusterManagerPerson.addItem(new Person(new LatLng(21.039433, 105.781857), "Teacher", R.drawable.master));
-//
-//        // http://www.flickr.com/photos/smithsonian/2887433330/
-//        mClusterManagerPerson.addItem(new Person(position(), "Stefan", R.drawable.stefan));
+
+        mClusterManagerPerson.addItem(new Person(new LatLng(21.042545, 105.778214), "Thánh Cường", R.drawable.cuong));
 //
 //        // http://www.flickr.com/photos/library_of_congress/2179915182/
 //        mClusterManagerPerson.addItem(new Person(position(), "Mechanic", R.drawable.mechanic));

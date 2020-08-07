@@ -18,10 +18,12 @@ import androidx.databinding.DataBindingUtil;
 import com.example.appweather.databinding.ActivityMainBinding;
 import com.example.appweather.gpsmanagement.GPSLocation;
 import com.example.appweather.helper.Helper;
+import com.example.appweather.models.Weather;
 import com.example.appweather.models.WeatherData;
 import com.example.appweather.retrofit.ApiClient;
 import com.example.appweather.retrofit.ApiInterface;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -32,11 +34,13 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    public static final String KEY_FRAGMENT_LAT_LNG = "Lat_Lng";
+    public static final String KEY_FRAGMENT_LAT = "Lat";
+    public static final String KEY_FRAGMENT_LNG = "Lng";
     public static final String KEY_MAPSACTIVITY_LAT = "Lat_Maps";
     public static final String KEY_MAPSACTIVITY_LNG = "Lng_Maps";
     public static final String KEY_MAPSACTIVITY_Address = "Address_Maps";
     public static final int REQUEST_CODE_MAPS = 101;
+    private boolean FLAG_WEATHER_MAPS;
 
     private double lat;
     private double lng;
@@ -46,17 +50,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.progressMain.setVisibility(View.VISIBLE);
         if (!checkRequiredPermissions()) checkRequiredPermissions();
         final GPSLocation gpsLocation = new GPSLocation(this);
         if (gpsLocation.canGetLocation) {
             gpsLocation.getLocation();
-            lat = gpsLocation.getLatitude();
-            lng = gpsLocation.getLongitude();
-            List<Address> addresses = Helper.getAddress(this, lat, lng);
+            setLat(gpsLocation.getLatitude());
+            setLng(gpsLocation.getLongitude());
+            List<Address> addresses = Helper.getAddress(this, getLat(), getLng());
             if (addresses.size() > 0) {
                 //currentCountryName = addresses.get(0).getCountryName();
-                currentAddress = addresses.get(0).getAddressLine(0);
+                setCurrentAddress(addresses.get(0).getAddressLine(0));
             } else {
                 Toast.makeText(this, "Không tồn tại location", Toast.LENGTH_SHORT).show();
             }
@@ -64,16 +67,22 @@ public class MainActivity extends AppCompatActivity {
             Log.d("BBBBBBB ", "Lỗi");
             System.out.println("Unable");
         }
+        Log.d("Điểm ban đầu", getLat() + "" + getLng());
+        Log.d("Flag", FLAG_WEATHER_MAPS + "");
+        if (isFLAG_WEATHER_MAPS() == false) {
+            getWeatherDataLocation(getLat(), getLng());
+            setFLAG_WEATHER_MAPS(true);
+            Log.d("Flag1", FLAG_WEATHER_MAPS + "");
+        }
 
-        getWeatherDataLocation(lat, lng);
         binding.btnNextDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Helper.checkLatLng(lat, lng) == true) {
+                if (Helper.checkLatLng(getLat(), getLng()) == true) {
                     DetailFragment detailFragment = new DetailFragment();
                     Bundle bundle = new Bundle();
-                    double[] listlatLng = {lat, lng};
-                    bundle.putDoubleArray(KEY_FRAGMENT_LAT_LNG, listlatLng);
+                    bundle.putDouble(KEY_FRAGMENT_LAT, getLat());
+                    bundle.putDouble(KEY_FRAGMENT_LNG, getLng());
                     detailFragment.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().add(R.id.main, detailFragment, DetailFragment.class.getName())
                             .commit();
@@ -90,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
         binding.btnMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Helper.checkLatLng(lat, lng) == true) {
+                if (Helper.checkLatLng(getLat(), getLng()) == true) {
                     Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putDouble(KEY_MAPSACTIVITY_LAT, lat);
-                    bundle.putDouble(KEY_MAPSACTIVITY_LNG, lng);
+                    bundle.putDouble(KEY_MAPSACTIVITY_LAT, getLat());
+                    bundle.putDouble(KEY_MAPSACTIVITY_LNG, getLng());
                     bundle.putString(KEY_MAPSACTIVITY_Address, currentAddress);
                     intent.putExtras(bundle);
                     startActivityForResult(intent, REQUEST_CODE_MAPS);
@@ -112,31 +121,56 @@ public class MainActivity extends AppCompatActivity {
      * @param data
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_MAPS) {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
-                lat = bundle.getDouble(MapsActivity.EXTRA_DATA_LAT);
-                lng = bundle.getDouble(MapsActivity.EXTRA_DATA_Lng);
-                currentAddress = bundle.getString(MapsActivity.EXTRA_DATA_ADDRESS);
-                Log.d("BBBBBBBBBBBBBBBBBBBBBB", lat + "");
-                Log.d("BBBBBBBBBBBBBBBBBBBBBB", lng + "");
-                Log.d("BBBBBBBBBBBBBBBBBBBBBB", currentAddress);
-                getWeatherDataLocation(lat, lng);
-                binding.tvAddress.setText(currentAddress);
+                setLat(bundle.getDouble(MapsActivity.EXTRA_DATA_LAT));
+                setLng(bundle.getDouble(MapsActivity.EXTRA_DATA_Lng));
+                setCurrentAddress(bundle.getString(MapsActivity.EXTRA_DATA_ADDRESS));
+                //double lat = bundle.getDouble(MapsActivity.EXTRA_DATA_LAT);
+                //double lng = bundle.getDouble(MapsActivity.EXTRA_DATA_Lng);
+                Log.d("vị trí lấy từ maps", getLat() + " " + getLng());
+                if (!isFLAG_WEATHER_MAPS()) {
+                    getWeatherDataLocation(lat, lng);
+                    binding.tvAddress.setText(getCurrentAddress());
+                    Log.d("Flag2", FLAG_WEATHER_MAPS + "");
+                }
+
+
             }
 
         }
     }
 
     public void getWeatherDataLocation(double lat, double lng) {
+        String latLocation = String.valueOf(lat);
+        String lngLocation = String.valueOf(lng);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<WeatherData> callback = apiInterface.getWeatherDataLocation(lat, lng);
+        Call<WeatherData> callback = apiInterface.getWeatherDataLocation(latLocation, lngLocation);
         callback.enqueue(new Callback<WeatherData>() {
             @Override
             public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
+                if (response.code() == 404) {
+                    Toast.makeText(MainActivity.this, "Không có vị trí được chọn", Toast.LENGTH_SHORT).show();
+                } else if (!(response.isSuccessful())) {
+                    Toast.makeText(MainActivity.this, "Test không vòa:  ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_LONG).show();
+                }
                 //binding.tvCountry.setText(currentCountryName);
+                Log.d("hàm thời tiết", response.body().getCoord().getLat() + " " + response.body().getCoord().getLon());
+                String descrition = response.body().getWeather().get(0).getDescription();
+                if (descrition.equals("clear sky") || descrition.equals("few clouds")) {
+                    binding.bgMain.setBackgroundResource(R.drawable.backggroung_hind);
+                } else if (descrition.equals("shower rain") || descrition.equals("rain")
+                        || descrition.equals("thunderstorm")) {
+                    binding.bgMain.setBackgroundResource(R.drawable.rain_backgroung);
+                } else if (descrition.equals("scattered clouds") || descrition.equals("broken clouds")) {
+                    binding.bgMain.setBackgroundResource(R.drawable.may);
+                } else {
+                    binding.bgMain.setBackgroundResource(R.drawable.may);
+                }
                 binding.tvAddress.setText(currentAddress);
                 Picasso.get().load("http://openweathermap.org/img/wn/" + response.body().getWeather().get(0).getIcon() + ".png").into(binding.imgIcon, new com.squareup.picasso.Callback() {
                     @Override
@@ -151,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 binding.tvHumidity.setText(response.body().getMain().getHumidity() + "%");
                 binding.tvTemp.setText(response.body().getMain().getTemp() + "°C");
-                binding.tvStatus.setText(response.body().getWeather().get(0).getDescription());
+                binding.tvStatus.setText(descrition);
                 binding.tvWind.setText(response.body().getWind().getSpeed() + " m/s");
                 binding.tvCloud.setText(response.body().getClouds().getAll() + "%");
                 String time = Helper.unixTimeStampToDatime(response.body().getDt());
@@ -162,33 +196,44 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<WeatherData> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Test bị lỗi----", Toast.LENGTH_LONG).show();
 
+                //Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("TAG", t.getMessage());
             }
         });
     }
 
-    public void getWeatherData(String name) {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<WeatherData> callback = apiInterface.getWeatherData(name);
-        callback.enqueue(new Callback<WeatherData>() {
-            @Override
-            public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
-                binding.tvAddress.setText(response.body().getName());
-                //binding.tvCountry.setText(response.body().getSys().getCountry());
-                binding.tvHumidity.setText(response.body().getMain().getHumidity().toString() + "%");
-                Picasso.get().load("http://openweathermap.org/img/wn/" + response.body().getWeather().get(0).getIcon() + ".png").into(binding.imgIcon);
-                binding.tvStatus.setText(response.body().getWeather().get(0).getMain());
-                binding.tvTemp.setText(response.body().getMain().getTemp().toString() + "°C");
-                binding.tvWind.setText(response.body().getWind().getSpeed().toString() + "m/s");
-                binding.tvCloud.setText(response.body().getClouds().getAll().toString() + "%");
+    public boolean isFLAG_WEATHER_MAPS() {
+        return false;
+    }
 
-            }
+    public void setFLAG_WEATHER_MAPS(boolean FLAG_WEATHER_MAPS) {
+        this.FLAG_WEATHER_MAPS = FLAG_WEATHER_MAPS;
+    }
 
-            @Override
-            public void onFailure(Call<WeatherData> call, Throwable t) {
+    public double getLat() {
+        return lat;
+    }
 
-            }
-        });
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public String getCurrentAddress() {
+        return currentAddress;
+    }
+
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
     }
 
     private boolean checkRequiredPermissions() {
