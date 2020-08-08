@@ -48,7 +48,7 @@
                     android:text="@string/address_location"
                     android:textAllCaps="true"
                     android:textColor="@color/text1"
-                    android:textSize="12sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_time"
@@ -56,11 +56,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_address"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/date_time"
                     android:textAllCaps="true"
                     android:textColor="@color/text1"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
 
                 <RelativeLayout
                     android:id="@+id/group_progressbar"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_time"
                     android:layout_marginLeft="@dimen/_2sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginRight="@dimen/_2sdp"
                     android:background="@drawable/bg_status"
                     android:padding="@dimen/_5sdp">
@@ -217,13 +217,13 @@
 
                 <Button
                     android:id="@+id/btn_next_day"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_group"
-                    android:layout_marginLeft="@dimen/_50sdp"
+                    android:layout_centerInParent="true"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_50sdp"
                     android:background="@drawable/next_sevent_day_backround"
+                    android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/button_7days"
                     android:textAllCaps="true"

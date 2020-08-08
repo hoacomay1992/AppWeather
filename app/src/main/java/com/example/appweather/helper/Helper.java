@@ -5,6 +5,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
+
+import com.example.appweather.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -89,5 +92,39 @@ public class Helper {
         markerOptions.title(nameAddress).snippet(spneetAddress);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
         mMap.addMarker(markerOptions);
+    }
+
+    public static int checkDescription(String descrition) {
+        if (descrition.equals("clear sky")) {
+            return R.string.clear_sky;
+        } else if (descrition.equals("few clouds")) {
+            return R.string.few_clouds;
+        } else if (descrition.equals("scattered clouds")) {
+            return R.string.scattered_clouds;
+        } else if (descrition.equals("broken clouds")) {
+            return R.string.broken_clouds;
+        } else if (descrition.equals("shower rain")) {
+            return R.string.shower_rain;
+        } else if (descrition.equals("rain")) {
+            return R.string.rain;
+        } else if (descrition.equals("thunderstorm")) {
+            return R.string.thunderstorm;
+        } else if (descrition.equals("snow")) {
+            return R.string.snow;
+        } else if (descrition.equals("mist")) {
+            return R.string.mist;
+        } else if (descrition.equals("light rain")) {
+            return R.string.light_rain;
+        } else if (descrition.equals("sky is clear")) {
+            return R.string.sky_is_clear;
+        } else if (descrition.equals("moderate rain")) {
+            return R.string.moderate_rain;
+        } else if (descrition.equals("heavy intensity rain")) {
+            return R.string.heavy_intensity_rain;
+        } else if (descrition.equals("overcast clouds")) {
+            return R.string.overcast_clouds;
+        } else {
+            return 0;
+        }
     }
 }

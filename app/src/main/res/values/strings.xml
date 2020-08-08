@@ -42,4 +42,15 @@
     <string name="thunderstorm">thunderstorm</string>
     <string name="snow">snow</string>
     <string name="mist">mist</string>
+    <string name="light_rain">light rain</string>
+    <string name="sky_is_clear">sky is clear</string>
+    <string name="moderate_rain">moderate rain</string>
+    <string name="heavy_intensity_rain">heavy intensity rain</string>
+    <string name="overcast_clouds">overcast clouds</string>
+
+    <!--string Maps_type.xml-->
+    <string name="map_type">Map type</string>
+    <string name="map_normal">Normal</string>
+    <string name="map_satellite">Satellite</string>
+    <string name="map_hybrid">Hybrid</string>
 </resources>

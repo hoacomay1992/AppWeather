@@ -43,4 +43,15 @@
     <string name="thunderstorm">Mưa giông kèm sấm sét</string>
     <string name="snow">Tuyết rơi</string>
     <string name="mist">Sương mù</string>
+    <string name="light_rain">Mưa nhỏ</string>
+    <string name="sky_is_clear">bầu trời quang đãng</string>
+    <string name="moderate_rain">mưa vừa</string>
+    <string name="heavy_intensity_rain">mưa lớn</string>
+    <string name="overcast_clouds">mây u ám</string>
+
+    <!--string Maps_type.xml-->
+    <string name="map_type">Loại bản đồ</string>
+    <string name="map_normal">Mặc định</string>
+    <string name="map_satellite">Vệ tinh</string>
+    <string name="map_hybrid">Địa hình</string>
 </resources>

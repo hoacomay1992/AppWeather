@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Random mRandom = new Random(1984);
     private boolean mIsRestore;
 
+    private LinearLayout btnMapTypeNormal;
+    private LinearLayout btnMapTypeSatellite;
+    private LinearLayout btnMapTypeHybrid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +118,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Toast.makeText(MapsActivity.this, getString(R.string.toat2), Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+        /**
+         * chức năng set map typle
+         */
+        mapsBinding.btnSetMapType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mapsBinding.btnMapType.getVisibility() == View.VISIBLE) {
+                    mapsBinding.btnMapType.setVisibility(View.GONE);
+                } else {
+                    mapsBinding.btnMapType.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        btnMapTypeNormal = findViewById(R.id.btn_map_type_normal);
+        btnMapTypeNormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                mapsBinding.btnMapType.setVisibility(View.GONE);
+            }
+        });
+        btnMapTypeHybrid = findViewById(R.id.btn_map_type_hybrid);
+        btnMapTypeHybrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                mapsBinding.btnMapType.setVisibility(View.GONE);
+            }
+        });
+        btnMapTypeSatellite = findViewById(R.id.btn_map_type_satellite);
+        btnMapTypeSatellite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                mapsBinding.btnMapType.setVisibility(View.GONE);
             }
         });
     }

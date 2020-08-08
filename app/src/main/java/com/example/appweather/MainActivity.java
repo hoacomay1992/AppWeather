@@ -173,27 +173,13 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-                if (descrition.equals("clear sky")) {
-                    binding.tvStatus.setText(getString(R.string.clear_sky));
-                } else if (descrition.equals("few clouds")) {
-                    binding.tvStatus.setText(getString(R.string.few_clouds));
-                } else if (descrition.equals("scattered clouds")) {
-                    binding.tvStatus.setText(getString(R.string.scattered_clouds));
-                } else if (descrition.equals("broken clouds")) {
-                    binding.tvStatus.setText(getString(R.string.broken_clouds));
-                } else if (descrition.equals("shower rain")) {
-                    binding.tvStatus.setText(getString(R.string.shower_rain));
-                } else if (descrition.equals("rain")) {
-                    binding.tvStatus.setText(getString(R.string.rain));
-                } else if (descrition.equals("thunderstorm")) {
-                    binding.tvStatus.setText(getString(R.string.thunderstorm));
-                } else if (descrition.equals("snow")) {
-                    binding.tvStatus.setText(getString(R.string.snow));
-                } else if (descrition.equals("mist")) {
-                    binding.tvStatus.setText(getString(R.string.mist));
+                int status = Helper.checkDescription(descrition);
+                if (status != 0) {
+                    binding.tvStatus.setText(getString(status));
                 } else {
                     binding.tvStatus.setText(descrition);
                 }
+
                 binding.tvHumidity.setText(response.body().getMain().getHumidity() + "%");
                 binding.tvTemp.setText(response.body().getMain().getTemp() + "°C");
                 binding.tvWind.setText(response.body().getWind().getSpeed() + " m/s");

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appweather.R;
+import com.example.appweather.helper.Helper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -66,7 +67,13 @@ public class WeatherAdapter extends BaseAdapter {
 
 
         viewHolder.tvDay.setText(weather.getDay());
-        viewHolder.tvStatus.setText(weather.getStatus());
+        String description = weather.getStatus();
+        int checkStatus = Helper.checkDescription(description);
+        if (checkStatus != 0) {
+            viewHolder.tvStatus.setText(checkStatus);
+        } else {
+            viewHolder.tvStatus.setText(description);
+        }
         viewHolder.tvMaxTemp.setText(weather.getMaxTemp() + "°C");
         viewHolder.tvMinTemp.setText(weather.getMinTemp() + "°C");
         Picasso.get().load("http://openweathermap.org/img/wn/" + weather.getImage() + ".png").into(viewHolder.imgStatus);

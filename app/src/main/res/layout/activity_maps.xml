@@ -11,6 +11,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <RelativeLayout
+            android:id="@+id/btnSetMapType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_80sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/background_button_set_map">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/todo1"
+                android:src="@drawable/ic_button_chang_map_type" />
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/btnMapType"
+            layout="@layout/maps_type"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_below="@+id/btnSetMapType"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/search"
             android:layout_width="match_parent"
